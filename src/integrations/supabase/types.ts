@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      habits: {
+        Row: {
+          category: Database["public"]["Enums"]["habit_category"]
+          color: string | null
+          created_at: string
+          description: string | null
+          frequency: Database["public"]["Enums"]["habit_frequency"]
+          frequency_days: number[] | null
+          icon: string | null
+          id: string
+          name: string
+          status: Database["public"]["Enums"]["habit_status"]
+          target_per_period: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["habit_category"]
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          frequency?: Database["public"]["Enums"]["habit_frequency"]
+          frequency_days?: number[] | null
+          icon?: string | null
+          id?: string
+          name: string
+          status?: Database["public"]["Enums"]["habit_status"]
+          target_per_period?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["habit_category"]
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          frequency?: Database["public"]["Enums"]["habit_frequency"]
+          frequency_days?: number[] | null
+          icon?: string | null
+          id?: string
+          name?: string
+          status?: Database["public"]["Enums"]["habit_status"]
+          target_per_period?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -49,7 +97,17 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      habit_category:
+        | "health"
+        | "fitness"
+        | "productivity"
+        | "learning"
+        | "mindfulness"
+        | "social"
+        | "finance"
+        | "other"
+      habit_frequency: "daily" | "weekly" | "custom"
+      habit_status: "active" | "archived"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -176,6 +234,19 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      habit_category: [
+        "health",
+        "fitness",
+        "productivity",
+        "learning",
+        "mindfulness",
+        "social",
+        "finance",
+        "other",
+      ],
+      habit_frequency: ["daily", "weekly", "custom"],
+      habit_status: ["active", "archived"],
+    },
   },
 } as const
