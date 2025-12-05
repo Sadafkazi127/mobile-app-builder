@@ -17,12 +17,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { HabitForm } from "@/components/habits/HabitForm";
+import { HabitHistory } from "@/components/habits/HabitHistory";
 import { useHabits, type Habit } from "@/hooks/useHabits";
+import { useHabitLogs } from "@/hooks/useHabitLogs";
 
 export default function HabitDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { getHabit, updateHabit, deleteHabit, archiveHabit, restoreHabit } = useHabits();
+  const { logs, loading: logsLoading, fetchLogs, undoLog } = useHabitLogs(id);
   
   const [habit, setHabit] = useState<Habit | null>(null);
   const [loading, setLoading] = useState(true);
@@ -70,6 +73,11 @@ export default function HabitDetail() {
     navigate("/habits");
   };
 
+  const handleDeleteLog = async (logId: string) => {
+    await undoLog(logId);
+    if (id) fetchLogs(id);
+  };
+
   if (loading) {
     return (
       <AppLayout title="Habit Details" showBottomNav={false}>
@@ -96,15 +104,15 @@ export default function HabitDetail() {
 
   return (
     <AppLayout title="Edit Habit" showBottomNav={false}>
-      <div className="container mx-auto px-4 py-6 max-w-lg">
-        <Button variant="ghost" size="sm" className="mb-4" asChild>
+      <div className="container mx-auto px-4 py-6 max-w-lg space-y-4">
+        <Button variant="ghost" size="sm" className="mb-2" asChild>
           <Link to="/habits">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Link>
         </Button>
 
-        <Card className="mb-4">
+        <Card>
           <CardHeader>
             <CardTitle>Edit Habit</CardTitle>
           </CardHeader>
@@ -116,6 +124,12 @@ export default function HabitDetail() {
             />
           </CardContent>
         </Card>
+
+        <HabitHistory
+          logs={logs}
+          loading={logsLoading}
+          onDeleteLog={handleDeleteLog}
+        />
 
         <Card>
           <CardHeader>
